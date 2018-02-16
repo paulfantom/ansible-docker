@@ -24,15 +24,6 @@
     state: started
     enabled: yes
 
-- name: Restrict docker access to specific subnet
-  iptables:
-    chain: DOCKER
-    action: insert
-    protocol: tcp
-    source: "! {{ docker_allow_subnet }}"
-    jump: DROP
-  when: docker_allow_subnet != ""
-
 - name: Login to registry
   docker_login:
     registry: "{{ item.url }}"
@@ -47,10 +38,15 @@
     - docker_swarm_enable
 #    - docker_version > 1.12
 
-- include: monitoring.yml
-  when: docker_monitoring
+- include: metrics.yml
+  when: docker_metrics
+
+- name: Evaluate docker_remote_socket variable
+  set_fact:
+    docker_remote_socket: "{{ docker_remote_socket }}"
+  when: docker_remote_socket != ""
 
 - include: portainer.yml
   run_once: yes
-  delegate_to: "{{ groups[docker_hosts_group][0] }}"
+  delegate_to: "{{ ansible_play_hosts[0] }}"
   when: docker_portainer_pass != ""

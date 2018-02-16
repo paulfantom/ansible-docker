@@ -1,5 +1,4 @@
 ---
-docker_hosts_group: docker
 #docker_package: "docker-ce"
 
 docker_users:
@@ -10,14 +9,13 @@ docker_local_socket: "unix:///var/run/docker.sock"
 docker_remote_socket: ""
 #docker_remote_socket: "tcp://{{ ansible_default_ipv4.address }}:2375"
 
-docker_monitoring: true
+docker_metrics: true
+docker_metrics_port: 8080
 docker_registries: []
 #docker_registries:
 #  - url: "registry.example.com"
 #    user: admin
 #    pass: password
-
-docker_allow_subnet: ""
 
 docker_portainer_pass: ""
 docker_portainer_address: "127.0.0.1"

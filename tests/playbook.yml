@@ -1,11 +1,12 @@
 ---
 - hosts: all
   pre_tasks:
-    - name: Install testing tools
-      package:
-        name: net-tools
-        state: present
+  - name: Install testing tools
+    package:
+      name: net-tools
+      state: present
+    retries: 5
   roles:
     - ansible-docker
   vars:
-    docker_monitoring: false
+    docker_metrics: false
